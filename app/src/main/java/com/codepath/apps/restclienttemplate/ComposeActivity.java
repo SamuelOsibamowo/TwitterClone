@@ -34,6 +34,7 @@ public class ComposeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+        
 
         // gets reference to client
         client = TwitterApp.getRestClient(this);
