@@ -18,7 +18,10 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onLogoutButton"
+        android:text="LOGOUT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:text="LOGOUT" />
         tools:text="LOGOUT" />
 </androidx.constraintlayout.widget.ConstraintLayout>
