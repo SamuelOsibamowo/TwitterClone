@@ -21,6 +21,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     private static final int REQUEST_CODE = 20;
     private SwipeRefreshLayout swipeContainer;
+
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -59,8 +61,6 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 fetchTimelineAsync(0);
             }
         });
@@ -70,22 +70,12 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void fetchTimelineAsync(int page) {
         // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 // Remember to CLEAR OUT old items before appending in the new ones
                 adapter.clear();
-                // ...the data has come back, add new items to your adapter...
-                try {
-                    adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
-                    adapter.notifyDataSetChanged();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // Now we call setRefreshing(false) to signal refresh has finished
+                populateHomeTimeline();
                 swipeContainer.setRefreshing(false);
             }
             @Override
@@ -98,6 +88,7 @@ public class TimelineActivity extends AppCompatActivity {
 
 
 
+    // Method that populates the home timeline
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -111,11 +102,9 @@ public class TimelineActivity extends AppCompatActivity {
                     Log.e(TAG, "JSON exception" + e);
                 }
             }
-
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "OnFailure :( " + response, throwable);
-
             }
         });
     }
@@ -132,13 +121,11 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.compose){
-            //Toast.makeText(this, "Compose", Toast.LENGTH_SHORT).show();
             // compose icon has been selected
             // should navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
             return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -154,16 +141,13 @@ public class TimelineActivity extends AppCompatActivity {
             // Update the adapter
             adapter.notifyItemInserted(0);
             rvTweets.smoothScrollToPosition(0);
-
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onLogoutButton(View view) {
         // forget who's logged in
         client.clearAccessToken();
-
 
         // navigate backwards to Login screen
         finish();
