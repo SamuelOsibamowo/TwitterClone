@@ -21,6 +21,7 @@ public class Tweet {
     public User user;
     public String imageUrl;
     public String timeStamp;
+    public long id;
 
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -35,6 +36,7 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.timeStamp =  tweet.getRelativeTimeAgo(tweet.createdAt);
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.id = jsonObject.getLong("id");
 
         // if the tweet body allows for us to grab the full tweet then we will focus on that
         if (jsonObject.has("full_text")) {
