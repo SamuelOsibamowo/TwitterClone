@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -51,24 +50,40 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivProfileImage;
         ImageView ivTweetImage;
         TextView tvBody;
+
+        TextView tvName;
         TextView tvScreenName;
+        TextView tvTimeStamp;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvName = itemView.findViewById(R.id.tvName);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+
 
         }
 
         // method focuses on attaching imageURLs to their appropriate imageView
         public void bind(Tweet tweet) {
+            tvTimeStamp.setText(tweet.timeStamp);
+            tvName.setText(tweet.user.name);
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            // only display the screen name if space allows for it
+            if (tweet.user.charsLeft > tweet.user.screenName.length()) {
+                tvScreenName.setText(tweet.user.screenName);
+            }
+
+            int Radius = 50;
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
+                    .transform(new RoundedCorners(Radius))
                     .into(ivProfileImage);
+
 
             Glide.with(context)
                     .load(tweet.imageUrl)
