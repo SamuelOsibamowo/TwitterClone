@@ -9,11 +9,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -39,12 +42,14 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        pb = (ProgressBar) findViewById(R.id.pbLoading);
         client = TwitterApp.getRestClient(this);
         // find recyler view
         rvTweets = findViewById(R.id.rvTweets);
@@ -54,14 +59,22 @@ public class TimelineActivity extends AppCompatActivity {
         // recyler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
+
+        pb.setVisibility(ProgressBar.VISIBLE);
         populateHomeTimeline();
+        pb.setVisibility(ProgressBar.INVISIBLE);
+
         // Setting up the Swipe Refresh Layout
         swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                // code to show progress bar
+                pb.setVisibility(ProgressBar.VISIBLE);
                 // Your code to refresh the list here.
                 fetchTimelineAsync(0);
+                pb.setVisibility(ProgressBar.INVISIBLE);
+
             }
         });
 
@@ -120,15 +133,14 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.compose){
-            // compose icon has been selected
-            // should navigate to the compose activity
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+        if (item.getItemId() == R.id.the_bird){
+            rvTweets.smoothScrollToPosition(0);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -145,6 +157,12 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void onComposeActivity(View view) {
+        Intent intent = new Intent(this, ComposeActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+
+    }
+
     public void onLogoutButton(View view) {
         // forget who's logged in
         client.clearAccessToken();
@@ -156,6 +174,8 @@ public class TimelineActivity extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
         startActivity(i);
     }
+
+
 
 
 

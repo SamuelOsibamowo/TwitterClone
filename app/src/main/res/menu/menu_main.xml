@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/compose"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:id="@+id/the_bird"
+        android:icon="@drawable/ic_launcher_twitter_round"
         android:title="Compose"
         app:showAsAction="always" />
 </menu>
