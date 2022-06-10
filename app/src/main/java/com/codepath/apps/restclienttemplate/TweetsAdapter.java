@@ -51,6 +51,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivTweetImage;
         TextView tvBody;
 
+        TextView ivRetweetCount;
+        TextView ivLikeCount;
         TextView tvName;
         TextView tvScreenName;
         TextView tvTimeStamp;
@@ -58,6 +60,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivRetweetCount = itemView.findViewById(R.id.ivRetweetCount);
+            ivLikeCount = itemView.findViewById(R.id.ivLikeCount);
+
             tvTimeStamp = itemView.findViewById(R.id.tvTimeStamp);
             ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
@@ -70,7 +75,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         // method focuses on attaching imageURLs to their appropriate imageView
         public void bind(Tweet tweet) {
+
+
             tvTimeStamp.setText(tweet.timeStamp);
+
+
+            ivRetweetCount.setText(tweet.retweetCount);
+            ivLikeCount.setText(tweet.likeCount);
+
+
             tvName.setText(tweet.user.name);
             tvBody.setText(tweet.body);
             // only display the screen name if space allows for it

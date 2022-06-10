@@ -37,15 +37,14 @@ public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     private static final int REQUEST_CODE = 20;
     private SwipeRefreshLayout swipeContainer;
-    public int lowestMaxId;
 
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
     ProgressBar pb;
-    long lastId;
 
+    long lastId;
     private EndlessRecyclerViewScrollListener scrollListener;
 
 
@@ -173,7 +172,15 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.the_bird){
-            rvTweets.smoothScrollToPosition(0);
+            // forget who's logged in
+            client.clearAccessToken();
+
+            // navigate backwards to Login screen
+            finish();
+            Intent i = new Intent(this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -201,21 +208,4 @@ public class TimelineActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE);
 
     }
-
-    public void onLogoutButton(View view) {
-        // forget who's logged in
-        client.clearAccessToken();
-
-        // navigate backwards to Login screen
-        finish();
-        Intent i = new Intent(this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
-        startActivity(i);
-    }
-
-
-
-
-
 }

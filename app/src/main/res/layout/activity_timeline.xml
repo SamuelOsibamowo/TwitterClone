@@ -14,7 +14,6 @@
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
@@ -26,20 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onLogoutButton"
-        android:text="LOGOUT"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="LOGOUT"
-        android:background="@color/black"
-        android:textColor="@color/light_gray"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -50,7 +36,9 @@
         android:src="@drawable/ic_vector_compose"
         app:layout_constraintBottom_toBottomOf="@id/swipeContainer"
         app:layout_constraintEnd_toEndOf="@id/swipeContainer"
-        android:onClick="onComposeActivity" />
+        android:onClick="onComposeActivity"
+        android:background="@color/twitter_blue"
+        android:backgroundTint="@color/twitter_blue"/>
 
     <ProgressBar
         android:id="@+id/pbLoading"
