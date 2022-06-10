@@ -174,7 +174,6 @@ public class TimelineActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.the_bird){
             // forget who's logged in
             client.clearAccessToken();
-
             // navigate backwards to Login screen
             finish();
             Intent i = new Intent(this, LoginActivity.class);
@@ -208,4 +207,10 @@ public class TimelineActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE);
 
     }
+
+    public void retweetCurrentTweet(View view) {
+
+    }
+
+
 }

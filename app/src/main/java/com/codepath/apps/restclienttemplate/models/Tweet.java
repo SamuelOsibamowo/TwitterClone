@@ -26,6 +26,8 @@ public class Tweet {
     public String retweetCount;
     public String likeCount;
 
+    public boolean tweetRetweeted;
+
     public long id;
 
     private static final int SECOND_MILLIS = 1000;
@@ -38,6 +40,7 @@ public class Tweet {
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.imageUrl = "";
+
 
         tweet.retweetCount = jsonObject.getString("retweet_count");
         tweet.likeCount = jsonObject.getString("favorite_count");
